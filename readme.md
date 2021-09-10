@@ -18,30 +18,37 @@ This case study is not interested in the ranking or the criteria to rank the ric
 
 **Data Retrieving**
 
+We started with connecting to Yelp API.
 ```python
 import requests
 import json
 import sqlite3
 
-api_key = 'wa3fd_QzLrL5ircAwtYoZi3y4Zia1J29ZVK9mOL-01jtzfIdCPhDnl4DlLc-9fMO0PukDqZ32Ctuzb7SH775b2y5lb4gf3OfNFgosYnVNcgVuuUvrGVgTCQi2z4vYXYx'
+api_key = 'your API key'
 headers = {'Authorization': 'Bearer %s' % api_key}
 
 url = 'https://api.yelp.com/v3/businesses/search'
-
+```
+Setting the search inputs.
+```python
 term = input('Term: ')
 location = input('Location: ')
 
 params = {'term':term,'location':location,'sort_by':'rating','limit':50}
 
 req = requests.get(url, params=params, headers=headers)
-
+```
+We want to input the data into sqlite database.
+```python
 conn = sqlite3.connect('content.sqlite')
 cur = conn.cursor()
 
 cur.execute('''CREATE TABLE IF NOT EXISTS Businesses
     (id INTEGER UNIQUE, Name TEXT, Country TEXT, City TEXT, Category TEXT, Rating TEXT,
      Address TEXT)''')
-
+```
+All set. Then we can parse the json code to retrieve the information we need here, and insert into the table in the database.
+```python
 parsed = json.loads(req.text)
 
 businesses = parsed["businesses"]
@@ -74,11 +81,16 @@ for business in businesses:
 
 **Data Visualizing**
 
+Here we use import the library pandas to communicate with sqlite, matplitlib to draw the charts.
 ```python
 import pandas as pd
 import sqlite3
 from matplotlib import pyplot as plt
+```
+Connect to the database, and create dataframes for plotting.
 
+First we want to find the top 5 most popular categoties among these five cities. 
+```python
 con = sqlite3.connect("content.sqlite")
 
 restaurants_df = pd.read_sql_query("""SELECT DISTINCT category, COUNT(*) as Number
@@ -91,7 +103,12 @@ plt.bar(restaurants_df.Category, restaurants_df.Number)
 plt.title("Top 5 MOST POPULAR RESTAURANT CATEGORIES")
 plt.xlabel("Restaurant Category")
 plt.ylabel("Number of Restaurants")
+```
+![Bar Chart](https://github.com/exit0619/Yelp-fusion_data-retrieving-visualizing/blob/main/Top5res.png?raw=true)
 
+And then we go a little bit closer to see the percentage of the top 5 catogories in each country, using a pie chart.
+
+```python
 restaurants_df = pd.read_sql_query("""SELECT city, category, COUNT(*) AS Number
 FROM Businesses
 GROUP BY city, category
@@ -169,6 +186,8 @@ plt.title("5 Higherst Rated Restaurants Categories in Los Angeles")
 
 plt.show()
 ```
-![Bar Chart](https://github.com/exit0619/Yelp-fusion_data-retrieving-visualizing/blob/main/Top5res.png?raw=true)
-
-
+![Pie Tokyo](https://github.com/exit0619/Yelp-fusion_data-retrieving-visualizing/blob/main/Pie_Tokyo.png?raw=true)
+![Pie NYC](https://github.com/exit0619/Yelp-fusion_data-retrieving-visualizing/blob/main/Pei_NYC.png?raw=true)
+![Pie LA](https://github.com/exit0619/Yelp-fusion_data-retrieving-visualizing/blob/main/Pie_LA.png?raw=true)
+![Pie London](https://github.com/exit0619/Yelp-fusion_data-retrieving-visualizing/blob/main/Pie_London.png?raw=true)
+![Pie Chicago](https://github.com/exit0619/Yelp-fusion_data-retrieving-visualizing/blob/main/Pie_Chicago.png?raw=true)
