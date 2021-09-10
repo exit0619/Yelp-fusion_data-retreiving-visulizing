@@ -169,6 +169,6 @@ plt.title("5 Higherst Rated Restaurants Categories in Los Angeles")
 
 plt.show()
 ```
-![Bar Chart](https://drive.google.com/open?id=1lgNIVckBCvbrlaWrqVxlEIgy9yx4qT9u&authuser=exit0619%40gmail.com&usp=drive_fs)
+![Bar Chart](https://github.com/exit0619/Yelp-fusion_data-retrieving-visualizing/blob/main/Top5res.png?raw=true)
 
 
