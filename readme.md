@@ -6,7 +6,7 @@ The Yelp Fusion API allows you to get the best local content and user reviews fr
 
 **Case Study**
 
-I am a person who likes to travel, especially exploring local famous restaurants. So I want to find out, in the top 5 world richest cities, what restaurant categories are people's favorite on Yelp. 
+I am a guy who likes to travel and explore local famous restaurants. So I want to find out, in the top 5 world richest cities, what restaurant categories are people's favorite on Yelp. 
 
 **Data Sources**
 
